@@ -1,0 +1,104 @@
+Count the Number of Special Characters II
+You are given a string word. A letter c is called special if it appears both in lowercase and uppercase in word, and every lowercase occurrence of c appears before the first uppercase occurrence of c.
+
+Return the number of special letters in word.
+
+ 
+
+Example 1:
+
+Input: word = "aaAbcBC"
+
+Output: 3
+
+Explanation:
+
+The special characters are 'a', 'b', and 'c'.
+
+Example 2:
+
+Input: word = "abc"
+
+Output: 0
+
+Explanation:
+
+There are no special characters in word.
+
+Example 3:
+
+Input: word = "AbBCab"
+
+Output: 0
+
+Explanation:
+
+There are no special characters in word.
+
+ 
+
+Constraints:
+
+1 <= word.length <= 2 * 105
+word consists of only lowercase and uppercase English letters.
+
+
+approch:
+1.use hashmap: store the first occurance of the uppercase and last occurance of the lowercase of a letter
+2.loop through the string
+3. if the character is between 'a' to 'z' and check its upper case is present in the hashmap and its indicies is lesser than its upper case indicies, if true increase the count
+4.return cnt
+
+class Solution {
+public:
+    int numberOfSpecialChars(string word) {
+        unordered_map<char,int> cmp,smp;
+        for(int i=0;i<word.length();i++)
+        {
+            char c=word[i];
+            if(c>='A'&&c<='Z')
+            {
+                if(cmp.find(c)==cmp.end())
+                {
+                    cmp[c]=i;
+                }
+            }
+            if(c>='a'&&c<='z')
+            {
+                if(smp.find(c)!=smp.end())
+                {
+                    smp[c]=i;
+                }
+                else{
+                    smp[c]=i;
+                }
+            }
+        }
+        int cnt=0;
+        for(auto it :smp)
+        {
+            char ch=it.first;
+            int sindex=it.second;
+            
+            if(ch>='a'&&ch<='z')
+            {
+
+                char cch=(char)toupper(ch);
+                int index=-1;
+                if(cmp.find(cch)!=cmp.end())
+                {
+                    index=cmp[cch];
+                }
+                if(index!=-1)
+                {
+                    if(sindex<index)
+                    {
+                        cnt++;
+                    }
+                }
+
+            }
+        }
+        return cnt;
+    }
+};
