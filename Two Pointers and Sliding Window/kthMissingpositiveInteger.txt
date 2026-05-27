@@ -1,0 +1,113 @@
+LeetCode 1539 — Kth Missing Positive Number
+Problem Statement
+
+Given a sorted array of positive integers arr and an integer k, return the k-th positive integer that is missing from this array.
+
+A positive integer is missing if it does not appear in arr
+
+
+Example
+
+Input:
+
+arr = [2,3,4,7,11], k = 5
+
+Output:
+
+9
+
+Explanation:
+
+Missing positive numbers are:
+
+1, 5, 6, 8, 9, 10, 12...
+
+The 5th missing positive number is:
+
+9
+Approach — Binary Search
+
+Since the array is sorted, we can use Binary Search to efficiently find the k-th missing positive number.
+
+For every index mid:
+
+missing = arr[mid] - (mid + 1)
+
+This formula gives the number of missing positive integers before arr[mid].
+
+Why?
+
+If no numbers were missing:
+
+Expected value at index mid = mid + 1
+
+But actual value is:
+
+arr[mid]
+
+So the difference gives the count of missing numbers.
+
+Binary Search Steps
+
+Initialize:
+
+l = 0
+r = arr.size() - 1
+
+Find middle index:
+
+mid = (l + r) / 2
+
+Compute missing numbers till mid:
+
+m = arr[mid] - (mid + 1)
+If m >= k
+The answer lies on the left side.
+
+Move:
+
+r = mid - 1
+Otherwise
+The answer lies on the right side.
+
+Move:
+
+l = mid + 1
+
+Final Answer:
+
+l + k
+Code
+class Solution {
+public:
+    int findKthPositive(vector<int>& arr, int k) {
+        int l = 0, r = arr.size() - 1;
+
+        while(l <= r)
+        {
+            int mid = (l + r) / 2;
+
+            int m = arr[mid] - (mid + 1);
+
+            if(m >= k)
+            {
+                r = mid - 1;
+            }
+            else
+            {
+                l = mid + 1;
+            }
+        }
+
+        return l + k;
+    }
+};
+Time Complexity
+O(log n)
+
+Because Binary Search is used.
+
+Space Complexity
+O(1)
+
+No extra space is used.
