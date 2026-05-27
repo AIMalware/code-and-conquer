@@ -111,3 +111,102 @@ Space Complexity
 O(1)
 
 No extra space is used.
+
+
+Brute force approach:
+
+Approach — Brute Force / Linear Search
+Idea
+
+We start checking numbers from 1 onwards.
+
+If the current number exists in the array, move to the next array element.
+Otherwise, it is a missing number.
+Decrease k whenever a missing number is found.
+When k becomes 0, the current number is the answer.
+Step-by-Step Explanation
+Variables Used
+current = 1
+
+Represents the current positive number being checked.
+
+i = 0
+
+Pointer for traversing the array.
+
+Working
+
+We run the loop until we find the k-th missing number.
+
+while k > 0:
+Case 1: Number exists in array
+if i < len(arr) and arr[i] == current:
+
+This means current is present in the array, so it is not missing.
+
+Move to the next array element:
+
+i += 1
+Case 2: Number is missing
+
+If current is not present in the array:
+
+else:
+
+Then it is a missing positive number.
+
+Decrease k:
+
+k -= 1
+
+If k becomes 0, we found the answer:
+
+if k == 0:
+    return current
+Move to next positive number
+current += 1
+Dry Run
+
+Input:
+
+arr = [2,3,4,7,11]
+k = 5
+
+Checking numbers:
+
+Current	Present in arr?	Missing Count
+1	No	1
+2	Yes	1
+3	Yes	1
+4	Yes	1
+5	No	2
+6	No	3
+7	Yes	3
+8	No	4
+9	No	5
+
+Answer:
+
+9
+Code:
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        current = 1
+        i = 0
+
+        while k > 0:
+            if i < len(arr) and arr[i] == current:
+                i += 1
+            else:
+                k -= 1
+                if k == 0:
+                    return current
+
+            current += 1
+Time Complexity
+O(n + k)
+
+Because we may traverse array elements and missing numbers sequentially.
+
+Space Complexity
+O(1)

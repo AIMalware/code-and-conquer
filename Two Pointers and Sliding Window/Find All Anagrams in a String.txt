@@ -1,0 +1,147 @@
+LeetCode 438 — Find All Anagrams in a String
+Problem Statement
+
+Given two strings s and p, return an array of all the start indices of p's anagrams in s.
+
+An anagram is a word formed by rearranging the letters of another word.
+
+You may return the answer in any order.
+
+Example
+
+Input:
+
+s = "cbaebabacd"
+p = "abc"
+
+Output:
+
+[0, 6]
+
+Explanation:
+
+Substrings:
+
+"cba" → anagram of "abc"
+"bac" → anagram of "abc"
+
+Starting indices are:
+
+0 and 6
+Approach — Sliding Window + Sorting
+Idea
+First sort string p.
+Then check every substring of s having the same length as p.
+Sort that substring and compare it with sorted p.
+If both are equal, it means the substring is an anagram.
+Step-by-Step Explanation
+Sort Pattern String
+pro = sorted(p)
+
+This stores the sorted version of p.
+
+Example:
+
+p = "abc"
+
+After sorting:
+
+['a', 'b', 'c']
+Initialize Variables
+start = 0
+res = []
+k = len(p)
+start → starting index of window
+res → stores answer indices
+k → size of sliding window
+Traverse All Windows
+for end in range(k, len(s) + 1):
+
+This creates substrings of length k.
+
+Extract Current Window
+jal = s[start:end]
+
+Example:
+
+s = "cbaebabacd"
+
+First window:
+
+"cba"
+Sort Current Substring
+al = sorted(jal)
+Compare with Sorted Pattern
+if pro == al:
+
+If equal:
+
+current substring is an anagram
+store starting index
+res.append(start)
+Move Window
+start += 1
+Return Result
+return res
+Dry Run
+
+Input:
+
+s = "abab"
+p = "ab"
+
+Sorted p:
+
+['a', 'b']
+Window	Sorted Window	Match?	Index
+"ab"	['a','b']	Yes	0
+"ba"	['a','b']	Yes	1
+"ab"	['a','b']	Yes	2
+
+Output:
+
+[0,1,2]
+Code
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+
+        pro = sorted(p)
+
+        start = 0
+        res = []
+
+        k = len(p)
+
+        for end in range(k, len(s) + 1):
+
+            jal = s[start:end]
+
+            al = sorted(jal)
+
+            if pro == al:
+                res.append(start)
+
+            start += 1
+
+        return res
+Time Complexity
+
+For every window:
+
+sorting takes:
+
+O(k log k)
+
+There are:
+
+(n - k + 1)
+
+windows.
+
+Total complexity:
+
+O((n-k+1) * k log k)
+Space Complexity
+O(k)
+
+Extra space is used for sorting the substring.
