@@ -1,0 +1,212 @@
+LeetCode 1539 — Kth Missing Positive Number
+Problem Statement
+
+Given a sorted array of positive integers arr and an integer k, return the k-th positive integer that is missing from this array.
+
+A positive integer is missing if it does not appear in arr
+
+
+Example
+
+Input:
+
+arr = [2,3,4,7,11], k = 5
+
+Output:
+
+9
+
+Explanation:
+
+Missing positive numbers are:
+
+1, 5, 6, 8, 9, 10, 12...
+
+The 5th missing positive number is:
+
+9
+Approach — Binary Search
+
+Since the array is sorted, we can use Binary Search to efficiently find the k-th missing positive number.
+
+For every index mid:
+
+missing = arr[mid] - (mid + 1)
+
+This formula gives the number of missing positive integers before arr[mid].
+
+Why?
+
+If no numbers were missing:
+
+Expected value at index mid = mid + 1
+
+But actual value is:
+
+arr[mid]
+
+So the difference gives the count of missing numbers.
+
+Binary Search Steps
+
+Initialize:
+
+l = 0
+r = arr.size() - 1
+
+Find middle index:
+
+mid = (l + r) / 2
+
+Compute missing numbers till mid:
+
+m = arr[mid] - (mid + 1)
+If m >= k
+The answer lies on the left side.
+
+Move:
+
+r = mid - 1
+Otherwise
+The answer lies on the right side.
+
+Move:
+
+l = mid + 1
+
+Final Answer:
+
+l + k
+Code
+class Solution {
+public:
+    int findKthPositive(vector<int>& arr, int k) {
+        int l = 0, r = arr.size() - 1;
+
+        while(l <= r)
+        {
+            int mid = (l + r) / 2;
+
+            int m = arr[mid] - (mid + 1);
+
+            if(m >= k)
+            {
+                r = mid - 1;
+            }
+            else
+            {
+                l = mid + 1;
+            }
+        }
+
+        return l + k;
+    }
+};
+Time Complexity
+O(log n)
+
+Because Binary Search is used.
+
+Space Complexity
+O(1)
+
+No extra space is used.
+
+
+Brute force approach:
+
+Approach — Brute Force / Linear Search
+Idea
+
+We start checking numbers from 1 onwards.
+
+If the current number exists in the array, move to the next array element.
+Otherwise, it is a missing number.
+Decrease k whenever a missing number is found.
+When k becomes 0, the current number is the answer.
+Step-by-Step Explanation
+Variables Used
+current = 1
+
+Represents the current positive number being checked.
+
+i = 0
+
+Pointer for traversing the array.
+
+Working
+
+We run the loop until we find the k-th missing number.
+
+while k > 0:
+Case 1: Number exists in array
+if i < len(arr) and arr[i] == current:
+
+This means current is present in the array, so it is not missing.
+
+Move to the next array element:
+
+i += 1
+Case 2: Number is missing
+
+If current is not present in the array:
+
+else:
+
+Then it is a missing positive number.
+
+Decrease k:
+
+k -= 1
+
+If k becomes 0, we found the answer:
+
+if k == 0:
+    return current
+Move to next positive number
+current += 1
+Dry Run
+
+Input:
+
+arr = [2,3,4,7,11]
+k = 5
+
+Checking numbers:
+
+Current	Present in arr?	Missing Count
+1	No	1
+2	Yes	1
+3	Yes	1
+4	Yes	1
+5	No	2
+6	No	3
+7	Yes	3
+8	No	4
+9	No	5
+
+Answer:
+
+9
+Code:
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        current = 1
+        i = 0
+
+        while k > 0:
+            if i < len(arr) and arr[i] == current:
+                i += 1
+            else:
+                k -= 1
+                if k == 0:
+                    return current
+
+            current += 1
+Time Complexity
+O(n + k)
+
+Because we may traverse array elements and missing numbers sequentially.
+
+Space Complexity
+O(1)

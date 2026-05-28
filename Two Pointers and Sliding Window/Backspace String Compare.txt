@@ -1,0 +1,164 @@
+LeetCode 844 — Backspace String Compare
+Problem Statement
+
+Given two strings s and t, return true if they are equal when both are typed into empty text editors.
+
+# means a backspace character.
+If there is nothing to erase, the backspace does nothing.
+Example
+
+Input:
+
+s = "ab#c"
+t = "ad#c"
+
+Output:
+
+True
+
+Explanation:
+
+Processing both strings:
+
+"ab#c" → "ac"
+"ad#c" → "ac"
+
+Both are equal.
+
+Approach — Stack Simulation
+Idea
+
+We simulate typing in a text editor using stacks.
+
+If the character is normal, push it into the stack.
+If the character is #, remove the last character using pop().
+After processing both strings, compare the final strings.
+Step-by-Step Explanation
+Create Two Stacks
+stree1 = []
+stree2 = []
+
+These stacks store the processed characters of both strings.
+
+Initialize Pointers
+i = 0
+j = 0
+
+Pointers for traversing strings s and t.
+
+Traverse Both Strings
+while i < n or j < m:
+
+Continue until both strings are fully processed.
+
+Processing String s
+
+If current character is #:
+
+if s[i] == "#":
+
+Remove last character if stack is not empty:
+
+stree1.pop()
+
+Otherwise add character to stack:
+
+stree1.append(s[i])
+Processing String t
+
+Same logic is applied:
+
+# → remove last character
+normal character → add to stack
+Convert Stack to String
+stree1 = ''.join(stree1)
+stree2 = ''.join(stree2)
+Compare Final Strings
+return stree1 == stree2
+
+If both processed strings are equal, return True.
+
+Otherwise return False.
+
+Dry Run
+
+Input:
+
+s = "ab#c"
+t = "ad#c"
+Processing s
+Character	Stack
+a	a
+b	ab
+#	a
+c	ac
+
+Final:
+
+"ac"
+Processing t
+Character	Stack
+a	a
+d	ad
+#	a
+c	ac
+
+Final:
+
+"ac"
+
+Both are equal.
+
+Output:
+
+True
+Code
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        stree1 = []
+        stree2 = []
+
+        i = 0
+        j = 0
+
+        n = len(s)
+        m = len(t)
+
+        while i < n or j < m:
+
+            if i < n:
+                if s[i] == "#":
+                    if len(stree1) != 0:
+                        stree1.pop()
+                else:
+                    stree1.append(s[i])
+
+                i += 1
+
+            if j < m:
+                if t[j] == "#":
+                    if len(stree2) != 0:
+                        stree2.pop()
+                else:
+                    stree2.append(t[j])
+
+                j += 1
+
+        stree1 = ''.join(stree1)
+        stree2 = ''.join(stree2)
+
+        return stree1 == stree2
+Time Complexity
+O(n + m)
+
+Where:
+
+n = length of s
+m = length of t
+
+Each character is processed once.
+
+Space Complexity
+O(n + m)
+
+Extra space is used for stacks.

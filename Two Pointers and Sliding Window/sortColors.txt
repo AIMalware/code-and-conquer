@@ -1,0 +1,143 @@
+LeetCode 75 — Sort Colors
+Problem Statement
+
+Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent.
+
+We use:
+
+0 → Red
+1 → White
+2 → Blue
+
+You must solve this problem without using the library sort function.
+
+Example
+
+Input:
+
+nums = [2,0,2,1,1,0]
+
+Output:
+
+[0,0,1,1,2,2]
+Approach — Dutch National Flag Algorithm
+
+This problem can be solved efficiently using the Dutch National Flag Algorithm.
+
+We maintain three pointers:
+
+Pointer	Purpose
+low	Position for next 0
+mid	Current element being checked
+right	Position for next 2
+Main Idea
+
+We divide the array into 4 regions:
+
+Region	Meaning
+0 → low-1	All 0s
+low → mid-1	All 1s
+mid → right	Unsorted elements
+right+1 → end	All 2s
+Step-by-Step Explanation
+Initialize Pointers
+low = 0
+mid = 0
+right = len(nums) - 1
+Traverse Array
+while mid <= right:
+
+Continue until all elements are processed.
+
+Case 1: Current Element is 0
+if nums[mid] == 0:
+
+Swap with low:
+
+nums[low], nums[mid] = nums[mid], nums[low]
+
+Move both pointers:
+
+low += 1
+mid += 1
+
+Because:
+
+0 is correctly placed.
+Elements before mid are already processed.
+Case 2: Current Element is 1
+elif nums[mid] == 1:
+
+Just move mid:
+
+mid += 1
+
+Because 1 is already in the correct middle region.
+
+Case 3: Current Element is 2
+else:
+
+Swap with right:
+
+nums[right], nums[mid] = nums[mid], nums[right]
+
+Move right pointer:
+
+right -= 1
+
+Do NOT move mid here because the swapped element from the right side still needs to be checked.
+
+Dry Run
+
+Input:
+
+nums = [2,0,2,1,1,0]
+Step	Array	low	mid	right
+Start	[2,0,2,1,1,0]	0	0	5
+Swap 2 with right	[0,0,2,1,1,2]	0	0	4
+Swap 0 with low	[0,0,2,1,1,2]	1	1	4
+Swap 0 with low	[0,0,2,1,1,2]	2	2	4
+Swap 2 with right	[0,0,1,1,2,2]	2	2	3
+Move mid	[0,0,1,1,2,2]	2	3	3
+Move mid	[0,0,1,1,2,2]	2	4	3
+
+Sorted array:
+
+[0,0,1,1,2,2]
+Code
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+
+        # Dutch National Flag Algorithm
+
+        low = 0
+        mid = 0
+        right = len(nums) - 1
+
+        while mid <= right:
+
+            if nums[mid] == 0:
+                nums[low], nums[mid] = nums[mid], nums[low]
+
+                low += 1
+                mid += 1
+
+            elif nums[mid] == 1:
+                mid += 1
+
+            else:
+                nums[right], nums[mid] = nums[mid], nums[right]
+
+                right -= 1
+Time Complexity
+O(n)
+
+Each element is processed at most once.
+
+Space Complexity
+O(1)
+
+Sorting is done in-place without extra space.
