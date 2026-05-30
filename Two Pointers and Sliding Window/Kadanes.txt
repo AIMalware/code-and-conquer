@@ -1,0 +1,18 @@
+class Solution:
+    def kConcatenationMaxSum(self, arr: List[int], k: int) -> int:
+        total=0
+        for i in arr:
+            total+=i
+        mod=10**9 + 7
+        current=0
+        maximum=0
+        for _ in range(min(2,k)):
+            for j in arr:
+                current=max(0,current+j)
+                maximum=max(maximum,current)
+        if total>0 and k>2:
+            maximum = maximum+(k-2)*total
+        return maximum%mod
+        
+
+        return maximum%mod
